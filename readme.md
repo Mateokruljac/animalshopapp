@@ -1,6 +1,5 @@
 How to start:
     - git clone https://github.com/Mateokruljac/animalshopapp.git 
-    - windows user: cd animalshopap
     - create your enviroment and activate it
     - install required packages
     - py manage.py runserver (running on localhost)
