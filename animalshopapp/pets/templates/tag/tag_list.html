@@ -1,0 +1,36 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+<!-- Start File Content -->
+{% block content %}
+<h1>Tag:</h1>
+<hr><br>
+{% if user.is_authenticated %}
+<a  class="btn btn-dark" href="{% url 'tag_create' %}"> + Add one</a>
+{% endif %}
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+        {% for tag in tags %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><a href = "{% url 'animals_by_tag' tag.id %}" style = "color:white">{{tag.name}}</a></td>
+        {% if request.user == tag.owner %}
+        <td><a href = "{% url 'tag_update' tag.id %}" style = "color:white">click here</a></td>
+        <td><a href = "{% url 'tag_delete' tag.id %}" style = "color:white">click here</a></td>
+        {% endif %}
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+
+{% endblock content %}
+<!-- End File Content -->

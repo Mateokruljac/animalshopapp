@@ -1,0 +1,30 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+<!-- Start File Content -->
+{% block content %}
+
+<div class = "row">
+    <!--Animal card -->
+    <div class = "col-lg-12">
+        {% if animal.img %}
+        <img class ="detailimage" src = "{{animal.img.url}}">
+        {% else %}
+        <img class ="detailimage" src = "{% static 'img/placeholder.jpg' %}">
+        {% endif %}
+        <div class = "col-lg-12 bg-secondary">
+            
+            <strong>Animal:</strong>{{animal.name}}
+            <p><strong>About:</strong>{{animal.about}}</p>
+            
+        </div>
+        
+        
+        
+        <a  class="btn btn-outline-dark" style = "float:right" href="{% url 'animal-detail' animal.id %}">&#x2190; Back</a><br>
+    </div>        
+    
+</div>
+</div>
+{% endblock content %}
+<!-- End File Content -->

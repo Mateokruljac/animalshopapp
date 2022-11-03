@@ -1,0 +1,15 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+<!-- Start File Content -->
+{% block content %}
+
+<h2>Create comment:</h2>
+<form action = "" method = "POST" enctype = "multipart/form-data">
+     {% csrf_token %}
+    {{form.as_p}}
+    <input type = "submit" class = "btn btn-dark" value = "Create">
+</form>
+
+{% endblock content %}
+<!-- End File Content -->

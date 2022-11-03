@@ -1,0 +1,19 @@
+{% extends 'core/main.html' %}
+{% load static %}
+<!-- Start File Content -->
+{% block content %}
+
+{% if created %}
+<b>New tag is successfully created!</b>
+<br><br>
+<a  class="btn btn-outline-dark" href="{% url 'tag_list' %}">&#x2190; Go to the tag</a>
+{% else %}
+<h2>Create tag</h2>
+<form action = "" method = "POST" enctype = "multipart/form-data">
+     {% csrf_token %}
+    {{form.as_p}}
+    <input type = "submit" class = "btn btn-dark" value = "Create">
+</form>
+{% endif %}
+{% endblock content %}
+<!-- End File Content -->

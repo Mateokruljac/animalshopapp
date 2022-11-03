@@ -1,0 +1,102 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+<!-- Start File Content -->
+{% block content %}
+
+<div class = "row">
+    <!--Animal card -->
+    <div class = "col-lg-12 ">
+        <h3 style ="float:right;display:inline-block">{{animal.price|floatformat:"2"}} $</h3>    
+        {% if animal.img %}
+        <img class ="detailimage" src = "{{animal.img.url}}">
+        {% else %}
+        <img class ="detailimage" src = "{% static 'img/placeholder.jpg' %}">
+        {% endif %}
+        <div class = "box-element product">
+           <h6><strong>Animal:  {{animal.name}}    </strong></h6>
+            <div class = "row">
+               <div class = "col-sm-4">
+                    {% if request.user in animal.likes.all %}
+                    <form method = "POST" action = "{% url 'likes' animal.id %}">
+                        {% csrf_token %}
+                        <button class = "btn btn-outline-danger" name = "likes" type = "submit" value = "{{ animal.id }}">Disike</button> - {{animal.total_likes}} likes 
+                    </form>
+                        {% else %}
+                        <form method = "POST" action = "{% url 'likes' animal.id %}">
+                            {% csrf_token %}
+                            <button class = "btn btn-outline-success" id = "like" name = "likes" type = "submit" value = "{{ animal.id }}">Like</button> - {{animal.total_likes}} likes 
+                    </form>
+                        {% endif %}
+                    <hr>
+                </div>
+                <div class = "col-sm-4">
+                </div>  
+                {% if request.user == animal.owner %}
+                <div class = "col-sm-4">
+                    <a href  = "{% url 'animal-update' animal.id %}" > <button class =  "btn btn-outline-secondary add-btn" >
+                        Update
+                    </button></a> 
+                    <a href  = "{% url 'animal-delete' animal.id %}" > <button class =  "btn btn-outline-secondary add-btn">
+                        Delete
+                    </button></a></div>
+                    {% else %}
+                    <div class = "col-sm-4">
+                        <button  data-action = "add" data-product = "{{animal.id}}" class =  "btn btn-outline-secondary add-btn update-cart">
+                            + Add to cart 
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                    <div class = "row bg-secondary"> 
+                        <div class = "col-lg-4 vr">
+                            <strong>INFO</strong></br><hr>
+                            <p><strong>About:</strong>{{animal.about|safe|slice:":20"}}... <a href = "{% url 'animal-about' animal.id %}" style = "color:white">click for more</a></p>
+                            {% for tag in animal.tag.all %}
+                            <p><strong>Tag:</strong>#{{tag}}</p>
+                            {% endfor %}
+                            <p><strong>Owner:</strong>{{animal.owner|title}}</p>
+                            <p><strong>Species:</strong>{{animal.species}}</p>
+                            <p><strong>Status:</strong>{{animal.status}}</p>
+                        </div>
+                    
+                                <div class = "col-lg-8">
+                                    <strong>({{count_comments}})Comments:</strong>  
+                                       <a href = "{% url 'create_comment' animal.id %}" style = "color:white"> Add one </a>
+                                       
+                                       <hr>
+                                       {% for comment in comments %}
+                                       <strong>name: {{comment.name}}  </strong> 
+                                       {% if user.is_authenticated %}
+                                       <small>
+                                       <a href = "{% url 'update_comment' animal.id comment.id %}" style = "color:white"> Update </a>
+                                       <a href = "{% url 'delete_comment' animal.id comment.id %}" style = "color:white"> Delete </a>
+                                       </small>
+                                        {% endif %}
+                                        <br>body: {{comment.body}}
+                                        <br>by: {{comment.owner}}
+                                    <hr>
+                                     {% endfor %}
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+            </div>          
+        </div>
+                    
+    </div>        
+    <script type = "text/javascript">
+        var user = "{{request.user}}"
+        var like = document.getElementById("like")
+        
+        if(user == "AnonymousUser"){
+            like.addEventListener("click",function(e){
+                e.preventDefault()
+                alert("Please log in, if you want to like!")
+            })
+        }
+
+    </script>
+</div>
+{% endblock content %}
+<!-- End File Content -->

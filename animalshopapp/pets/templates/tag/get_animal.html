@@ -1,0 +1,96 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+<!-- Start File Content -->
+{% block content %}
+
+<h1>Tag: {{tag.name}}</h1>
+
+<form align = "center" action = "search" method = "POST" class="form-inline my-3 my-lg-0" style = "text-align:center">
+    {% csrf_token %}
+    <center>
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name = "search" aria-label="Search">
+      <button class="btn btn-success my-2 my-sm-0" type="submit" title = "Search by name">Search</button>
+    </center>
+  </form><br>
+
+
+  <div class = "row">
+  <!--Animal card -->
+  <div class = "col-lg-4">
+    
+      
+    <img class ="thumbnail bg-dark">
+
+      <div class = "box-element product">
+          <h6><strong>Create your offer</strong></h6>
+          <a href= "{%  url 'animal-create' %}" id= "not logged in">click here</a>
+
+        <hr>
+          <button  class =  "btn btn-outline-secondary update-cart">
+              + Add to cart 
+          </button>
+          <a href = "#"><button class = "btn btn-success">
+            View
+          </button></a>
+          <h4 style ="float:right;display:inline-block">0.00 $</h4>    
+        </div>
+      </div>
+      
+
+    {% for animal in animals %} 
+    <!--Animal card -->
+    <div class = "col-lg-4">
+      
+      {% if animal.img %}
+      <img class ="thumbnail" src = "{{animal.img.url}}">
+
+      {% else %}
+        <img class ="thumbnail" src = "{% static 'img/placeholder.jpg' %}">
+      {% endif %}
+        <div class = "box-element product">
+            <h6><strong>{{animal.name}}</strong></h6>
+            {% if animal.tag.all %}
+            {% for tag in animal.tag.all %}
+            <small>
+              #{{tag}}
+            </small>
+            {% endfor %}
+            {% else %}
+            <small>
+              #
+            </small>
+            {% endif %}
+          <hr>
+          {% if not request.user == animal.owner%}
+            <button class = "btn btn-outline-secondary update-cart" data-action = "add" data-product = {{animal.id}}>
+                + Add to cart 
+            </button>
+            {% endif %}
+            <a href = "{% url 'animal-detail' animal.id %}  "><button class = "btn btn-success">
+              View
+            </button></a>
+            <h4 style ="float:right;display:inline-block">{{animal.price}} $</h4>    
+          </div>
+        </div>
+        
+        {% endfor %}
+      </div>
+    </div>
+</div>
+
+<script>
+  var form = document.getElementById("not logged in")
+  var user = "{{request.user}}"
+
+  if(user == "AnonymousUser"){
+    console.log("AnonymousUser")
+   form.addEventListener("click",function(){
+    document.getElementById("not logged in").removeAttribute("href")
+    alert("You must be logged in for this action!")
+    window.location.href = "{% url 'store' %}"
+   })
+  }
+</script>
+{% endblock content %}
+<!-- End File Content -->

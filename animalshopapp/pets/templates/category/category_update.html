@@ -1,0 +1,19 @@
+{% extends 'core/main.html' %}
+{% load static %}
+<!-- Start File Content -->
+{% block content %}
+
+{% if updated %}
+<b>Category {{category.title}} is successfully updated!</b>
+<br><br>
+<a  class="btn btn-outline-dark" href="{% url 'category_list' %}">&#x2190; Go to the category page!</a>
+{% else %}
+<h2>Update {{category.title}}</h2>
+<form action = "" method = "POST" enctype = "multipart/form-data">
+     {% csrf_token %}
+    {{form.as_p}}
+    <input type = "submit" class = "btn btn-dark" value = "Save">
+</form>
+{% endif %}
+{% endblock content %}
+<!-- End File Content -->
